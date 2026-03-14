@@ -1,8 +1,14 @@
-# doge-mcp
+# DOGE MCP
 
 An MCP (Model Context Protocol) server that wraps the [doge.gov](https://api.doge.gov) public API, letting Claude query U.S. government spending transparency data — cancelled contracts, grants, leases, and payment records — directly from a conversation.
 
+![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+![Node.js: 18+](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)
+![API: v0.0.2-beta](https://img.shields.io/badge/doge.gov%20API-v0.0.2--beta-orange.svg)
+
 > **Disclaimer:** This project is an independent, unofficial tool and is not affiliated with, endorsed by, or associated with the U.S. Department of Government Efficiency (DOGE), the U.S. federal government, or any government agency. All data is fetched in real time from the publicly available `api.doge.gov` API. The accuracy, completeness, and timeliness of the data are the sole responsibility of that API. This tool is provided for informational and research purposes only. Nothing returned by this server constitutes legal, financial, or political advice. Use responsibly and in accordance with applicable laws.
+
+> **API status:** The doge.gov API is in beta and subject to change without notice. Tool behaviour may change as the upstream API evolves.
 
 ---
 
@@ -15,6 +21,32 @@ An MCP (Model Context Protocol) server that wraps the [doge.gov](https://api.dog
 | `get_lease_savings` | `GET /savings/leases` | Cancelled property leases — location, sq ft, agency, savings |
 | `get_payments` | `GET /payments` | Payment line items with justifications; filterable by agency, date, or org |
 | `get_payment_statistics` | `GET /payments/statistics` | Aggregated payment counts by agency, date, and org name |
+
+### Tool Parameters
+
+**`get_grant_savings` / `get_contract_savings` / `get_lease_savings`**
+
+| Parameter | Type | Values | Default |
+|-----------|------|--------|---------|
+| `sort_by` | string | `savings` `value` `date` | — |
+| `sort_order` | string | `asc` `desc` | — |
+| `page` | number | ≥ 1 | 1 |
+| `per_page` | number | 1 – 500 | 100 |
+
+**`get_payments`**
+
+| Parameter | Type | Values | Default |
+|-----------|------|--------|---------|
+| `sort_by` | string | `amount` `date` | — |
+| `sort_order` | string | `asc` `desc` | — |
+| `page` | number | ≥ 1 | 1 |
+| `per_page` | number | 1 – 500 | 100 |
+| `filter` | string | `agency_name` `date` `org_name` | — |
+| `filter_value` | string | value to match | — |
+
+> **Filtering payments:** `filter` and `filter_value` must always be supplied together. Use `get_payment_statistics` first to discover valid agency names and organisation names, then pass the exact string as `filter_value`.
+
+**`get_payment_statistics`** — no parameters.
 
 ---
 
@@ -41,7 +73,21 @@ The compiled server lands in `./dist/index.js`.
 
 ## Claude Desktop Configuration
 
-Add the following to your `claude_desktop_config.json` (usually at `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+### macOS
+
+Config file: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+### Windows
+
+Config file: `%APPDATA%\Claude\claude_desktop_config.json`
+
+### Linux
+
+Config file: `~/.config/Claude/claude_desktop_config.json`
+
+---
+
+Add the following block (adjust the path to match your machine):
 
 ```json
 {
@@ -54,9 +100,17 @@ Add the following to your `claude_desktop_config.json` (usually at `~/Library/Ap
 }
 ```
 
-Replace `/absolute/path/to/doge_api` with the real path on your machine, e.g. `/Users/yourname/Projects/doge_api`.
+**macOS/Linux example:**
+```json
+"args": ["/Users/yourname/Projects/doge_api/dist/index.js"]
+```
 
-Restart Claude Desktop after saving. You should see the five DOGE tools appear in the tool picker.
+**Windows example:**
+```json
+"args": ["C:\\Users\\yourname\\Projects\\doge_api\\dist\\index.js"]
+```
+
+Restart Claude Desktop after saving. The five DOGE tools will appear in the tool picker.
 
 ---
 
@@ -69,13 +123,16 @@ Show me the 10 grants with the highest savings, sorted descending.
 Which federal agencies cancelled the most contracts? Page through the results.
 ```
 ```
+What agencies have payment data available? (use get_payment_statistics first)
+```
+```
 Find all payments made to org_name "CONNECTICUT STATE DEPT OF REHABILITATION SERVICES".
 ```
 ```
-What agencies have payment data in the DOGE system? (use get_payment_statistics)
+List cancelled government leases sorted by savings, largest first.
 ```
 ```
-List cancelled government leases in California sorted by square footage.
+Show me contracts cancelled by the General Services Administration.
 ```
 
 ---
@@ -83,7 +140,7 @@ List cancelled government leases in California sorted by square footage.
 ## Development
 
 ```bash
-# Run directly without building (requires tsx dev dependency)
+# Run directly without building (uses tsx, included in devDependencies)
 npm run dev
 
 # Rebuild after changes
@@ -112,7 +169,17 @@ doge_api/
 
 ## Rate Limits
 
-The `api.doge.gov` API enforces rate limits. If you receive a `429` error, wait a moment and retry. This server surfaces rate limit errors with a clear message rather than crashing.
+The `api.doge.gov` API enforces rate limits. If you receive a `429` error, wait a moment and retry. This server surfaces rate limit errors with a clear message rather than crashing silently.
+
+---
+
+## Contributing
+
+Pull requests are welcome. For significant changes, open an issue first to discuss what you'd like to change.
+
+1. Fork the repo
+2. Create a feature branch: `git checkout -b feature/my-change`
+3. Commit your changes and open a PR
 
 ---
 
