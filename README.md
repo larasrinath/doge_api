@@ -173,16 +173,6 @@ The `api.doge.gov` API enforces rate limits. If you receive a `429` error, wait 
 
 ---
 
-## Contributing
-
-Pull requests are welcome. For significant changes, open an issue first to discuss what you'd like to change.
-
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feature/my-change`
-3. Commit your changes and open a PR
-
----
-
 ## License
 
 MIT — see [LICENSE](./LICENSE).
