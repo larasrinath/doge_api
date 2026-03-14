@@ -1,10 +1,14 @@
+<div align="center">
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Node.js: 18+](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
+[![API: v0.0.2-beta](https://img.shields.io/badge/doge.gov%20API-v0.0.2--beta-orange.svg)](https://api.doge.gov/docs#/)
+
 # DOGE MCP
 
-An MCP (Model Context Protocol) server that wraps the [doge.gov](https://api.doge.gov) public API, letting Claude query U.S. government spending transparency data — cancelled contracts, grants, leases, and payment records — directly from a conversation.
+</div>
 
-![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
-![Node.js: 18+](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)
-![API: v0.0.2-beta](https://img.shields.io/badge/doge.gov%20API-v0.0.2--beta-orange.svg)
+An MCP (Model Context Protocol) server that wraps the [doge.gov](https://api.doge.gov) public API, letting Claude query U.S. government spending transparency data — cancelled contracts, grants, leases, and payment records — directly from a conversation.
 
 > **Disclaimer:** This project is an independent, unofficial tool and is not affiliated with, endorsed by, or associated with the U.S. Department of Government Efficiency (DOGE), the U.S. federal government, or any government agency. All data is fetched in real time from the publicly available `api.doge.gov` API. The accuracy, completeness, and timeliness of the data are the sole responsibility of that API. This tool is provided for informational and research purposes only. Nothing returned by this server constitutes legal, financial, or political advice. Use responsibly and in accordance with applicable laws.
 
